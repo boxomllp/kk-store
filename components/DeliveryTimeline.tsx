@@ -2,7 +2,7 @@
 
 import { useStoreSettings } from "@/lib/hooks/useStoreSettings";
 
-function addDays(days: number) {
+function formatDate(days: number) {
   const d = new Date();
   d.setDate(d.getDate() + days);
   return d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
@@ -14,29 +14,39 @@ export default function DeliveryTimeline({ compact = false }: { compact?: boolea
   const deliveryDays = parseInt(settings.delivery_days || "4", 10);
 
   const steps = [
-    { icon: "🛒", label: "Ordered", date: addDays(0) },
-    { icon: "📦", label: "Order Ready", date: addDays(readyDays) },
-    { icon: "🚚", label: "Delivered", date: addDays(deliveryDays) },
+    { icon: "🛒", label: "Ordered", date: formatDate(0) },
+    { icon: "📦", label: "Order Ready", date: formatDate(readyDays) },
+    { icon: "🚚", label: "Delivered", date: formatDate(deliveryDays) },
   ];
 
+  const circleSize = compact ? 36 : 48;
+
   return (
-    <div className={`flex items-center justify-between ${compact ? "gap-2" : "gap-4"}`}>
-      {steps.map((s, i) => (
-        <div key={s.label} className="flex-1 flex items-center">
-          <div className="flex flex-col items-center text-center flex-1">
-            <div
-              className={`rounded-full bg-orange-100 flex items-center justify-center ${
-                compact ? "w-8 h-8 text-base" : "w-12 h-12 text-xl"
-              }`}
-            >
-              {s.icon}
+    <div className={`rounded-xl bg-orange-50 ${compact ? "px-3 py-3" : "px-4 py-5"}`}>
+      <div className="flex items-start">
+        {steps.map((s, i) => (
+          <div key={s.label} className="flex items-center flex-1 last:flex-none">
+            <div className="flex flex-col items-center text-center" style={{ width: circleSize + 20 }}>
+              <div
+                className="rounded-full bg-navy text-white flex items-center justify-center shrink-0"
+                style={{ width: circleSize, height: circleSize, fontSize: compact ? 16 : 20 }}
+              >
+                {s.icon}
+              </div>
+              <span className={`mt-1.5 font-semibold text-navy ${compact ? "text-xs" : "text-sm"}`}>
+                {s.label}
+              </span>
+              <span className={`text-gray-500 ${compact ? "text-[11px]" : "text-xs"}`}>{s.date}</span>
             </div>
-            <span className={`mt-1 font-medium ${compact ? "text-xs" : "text-sm"}`}>{s.label}</span>
-            <span className="text-xs text-gray-500">{s.date}</span>
+            {i < steps.length - 1 && (
+              <div
+                className="flex-1 bg-orange-200"
+                style={{ height: 2, marginBottom: compact ? 28 : 36 }}
+              />
+            )}
           </div>
-          {i < steps.length - 1 && <div className="flex-1 h-0.5 bg-orange-200 -mt-6" />}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

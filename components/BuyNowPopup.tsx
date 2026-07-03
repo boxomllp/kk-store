@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useStoreSettings } from "@/lib/hooks/useStoreSettings";
 import { usePixel } from "@/lib/hooks/usePixel";
-import { INDIAN_STATES, type FormField } from "@/lib/types";
+import { useFormConfig } from "@/lib/hooks/useFormConfig";
+import { INDIAN_STATES } from "@/lib/types";
 import DeliveryTimeline from "@/components/DeliveryTimeline";
 
 type Step = "form" | "otp";
@@ -43,6 +44,7 @@ const EMPTY_VALUES: FormValues = {
 export default function BuyNowPopup({ productId, productName, price, variant, onClose }: Props) {
   const { settings } = useStoreSettings();
   const { track } = usePixel();
+  const { fields } = useFormConfig();
   const router = useRouter();
   const supabase = createClient();
 
@@ -53,7 +55,6 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
     setStepState(s);
   };
 
-  const [fields, setFields] = useState<FormField[]>([]);
   const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -70,19 +71,6 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
   const [changingNumber, setChangingNumber] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [verifying, setVerifying] = useState(false);
-
-  // --- load form config ---
-  useEffect(() => {
-    supabase
-      .from("form_config")
-      .select("*")
-      .eq("visible", true)
-      .order("sort_order", { ascending: true })
-      .then(({ data }) => {
-        if (data) setFields(data as FormField[]);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // --- lock body scroll on mount ---
   useEffect(() => {

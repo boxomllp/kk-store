@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { StoreSettingsProvider } from "@/lib/hooks/useStoreSettings";
 import { PixelProvider } from "@/lib/hooks/usePixel";
+import { FormConfigProvider } from "@/lib/hooks/useFormConfig";
 import PageViewTracker from "@/components/PageViewTracker";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -18,8 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <StoreSettingsProvider>
           <PixelProvider>
-            <PageViewTracker />
-            {children}
+            <FormConfigProvider>
+              <PageViewTracker />
+              {children}
+            </FormConfigProvider>
           </PixelProvider>
         </StoreSettingsProvider>
       </body>
