@@ -101,8 +101,12 @@ Deno.serve(async (req) => {
       const url = `https://apihome.in/panel/api/bulksms/?key=${apiHomeKey}&mobile=${phone}&otp=${otp}`;
       try {
         const smsRes = await fetch(url);
+        const smsResText = await smsRes.text();
+        // Log the raw APIHome response so real failures (wrong balance, DLT
+        // route issues, etc.) are visible even when APIHome returns HTTP 200.
+        console.log("APIHome response:", smsRes.status, smsResText);
+
         if (!smsRes.ok) {
-          console.error("APIHome SMS failed", await smsRes.text());
           return new Response(
             JSON.stringify({ success: false, error: "Failed to send OTP SMS" }),
             { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
