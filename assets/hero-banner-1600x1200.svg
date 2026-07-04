@@ -1,0 +1,43 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>KK Store hero banner</title>
+  <desc>Amber-themed decorative banner with flat product icon shapes, no text or buttons</desc>
+
+  <rect x="0" y="0" width="1600" height="1200" fill="#FFFFFF"/>
+
+  <path d="M0,700 C300,600 500,900 900,780 C1200,690 1350,760 1600,650 L1600,1200 L0,1200 Z" fill="#F2A93B"/>
+  <path d="M0,780 C300,700 550,950 900,850 C1250,760 1400,830 1600,730 L1600,1200 L0,1200 Z" fill="#F7C46B" opacity="0.6"/>
+
+  <circle cx="1420" cy="230" r="150" fill="#F2A93B" opacity="0.15"/>
+  <circle cx="220" cy="200" r="110" fill="#F2A93B" opacity="0.12"/>
+
+  <g transform="translate(240,360)">
+    <rect x="0" y="0" width="220" height="320" rx="28" fill="#1A1A1A"/>
+    <rect x="22" y="30" width="176" height="220" rx="12" fill="#FFFFFF"/>
+    <circle cx="110" cy="280" r="12" fill="#F2A93B"/>
+  </g>
+
+  <g transform="translate(560,420)">
+    <ellipse cx="110" cy="220" rx="110" ry="60" fill="#1A1A1A"/>
+    <rect x="45" y="50" width="130" height="180" rx="65" fill="#F2A93B"/>
+    <circle cx="110" cy="85" r="22" fill="#FFFFFF"/>
+  </g>
+
+  <g transform="translate(880,500)">
+    <rect x="0" y="0" width="300" height="180" rx="18" fill="#F2A93B"/>
+    <rect x="24" y="24" width="252" height="132" rx="12" fill="#FFFFFF"/>
+    <rect x="48" y="55" width="90" height="16" rx="8" fill="#F2A93B"/>
+    <rect x="48" y="85" width="180" height="12" rx="6" fill="#E5E5E5"/>
+    <rect x="48" y="108" width="180" height="12" rx="6" fill="#E5E5E5"/>
+  </g>
+
+  <g transform="translate(1230,340)">
+    <circle cx="80" cy="80" r="80" fill="#1A1A1A"/>
+    <path d="M45,80 L70,105 L120,55" fill="none" stroke="#F2A93B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(1180,600)">
+    <rect x="0" y="0" width="200" height="80" rx="40" fill="#1A1A1A"/>
+    <circle cx="40" cy="40" r="26" fill="#F2A93B"/>
+    <circle cx="160" cy="40" r="26" fill="#F2A93B"/>
+  </g>
+</svg>

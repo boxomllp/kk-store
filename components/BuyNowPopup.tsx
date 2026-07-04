@@ -130,23 +130,42 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
     return fields.find((f) => f.field_name === name);
   }
 
+  function validateField(fieldName: string, val: string): string {
+    const f = fieldConfig(fieldName);
+    if (!f) return "";
+    if (f.required && !val.trim()) return `${f.label} is required`;
+    if (f.min_chars && val.trim().length > 0 && val.trim().length < f.min_chars) {
+      return `${f.label} must be at least ${f.min_chars} characters`;
+    }
+    if (fieldName === "phone" && val && !/^[6-9]\d{9}$/.test(val)) {
+      return "Enter a valid 10-digit phone number";
+    }
+    if (fieldName === "pincode" && val && !/^\d{6}$/.test(val)) {
+      return "Enter a valid 6-digit pincode";
+    }
+    return "";
+  }
+
+  function handleFieldChange(fieldName: string, val: string) {
+    setValues((v) => ({ ...v, [fieldName]: val }));
+    // Re-validate live so the error clears as soon as the input becomes valid,
+    // instead of only being cleared on next submit attempt.
+    setErrors((prev) => {
+      if (!(fieldName in prev)) return prev;
+      const message = validateField(fieldName, val);
+      const next = { ...prev };
+      if (message) next[fieldName] = message;
+      else delete next[fieldName];
+      return next;
+    });
+  }
+
   function validate(): boolean {
     const newErrors: Record<string, string> = {};
     fields.forEach((f) => {
       const val = (values as any)[f.field_name] ?? "";
-      if (f.required && !val.trim()) {
-        newErrors[f.field_name] = `${f.label} is required`;
-        return;
-      }
-      if (f.min_chars && val.trim().length > 0 && val.trim().length < f.min_chars) {
-        newErrors[f.field_name] = `${f.label} must be at least ${f.min_chars} characters`;
-      }
-      if (f.field_name === "phone" && val && !/^\d{10}$/.test(val)) {
-        newErrors[f.field_name] = "Enter a valid 10-digit phone number";
-      }
-      if (f.field_name === "pincode" && val && !/^\d{6}$/.test(val)) {
-        newErrors[f.field_name] = "Enter a valid 6-digit pincode";
-      }
+      const message = validateField(f.field_name, val);
+      if (message) newErrors[f.field_name] = message;
     });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -330,7 +349,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
                       <select
                         className="w-full border rounded-lg px-3 py-2 mt-1"
                         value={values.state}
-                        onChange={(e) => setValues((v) => ({ ...v, state: e.target.value }))}
+                        onChange={(e) => handleFieldChange("state", e.target.value)}
                       >
                         <option value="">Select State</option>
                         {INDIAN_STATES.map((s) => (
@@ -354,7 +373,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
                       placeholder={f.placeholder || ""}
                       className="w-full border rounded-lg px-3 py-2 mt-1"
                       value={(values as any)[f.field_name] ?? ""}
-                      onChange={(e) => setValues((v) => ({ ...v, [f.field_name]: e.target.value }))}
+                      onChange={(e) => handleFieldChange(f.field_name, e.target.value)}
                     />
                     {errors[f.field_name] && (
                       <p className="text-red-500 text-xs mt-1">{errors[f.field_name]}</p>

@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     const { phone } = await req.json();
-    if (!phone || !/^\d{10}$/.test(phone)) {
+    if (!phone || !/^[6-9]\d{9}$/.test(phone)) {
       return new Response(JSON.stringify({ success: false, error: "Invalid phone number" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
