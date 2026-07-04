@@ -1,27 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { useStoreSettings } from "@/lib/hooks/useStoreSettings";
-import type { PageRow } from "@/lib/types";
+import { usePagesNav } from "@/lib/hooks/usePagesNav";
 
 export default function Header() {
   const { settings } = useStoreSettings();
   const pathname = usePathname();
-  const [navPages, setNavPages] = useState<PageRow[]>([]);
-
-  useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("pages")
-      .select("*")
-      .eq("show_in_header", true)
-      .then(({ data }) => {
-        if (data) setNavPages(data as PageRow[]);
-      });
-  }, []);
+  const { headerPages: navPages } = usePagesNav();
 
   return (
     <header

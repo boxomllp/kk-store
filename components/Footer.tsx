@@ -1,27 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { useStoreSettings } from "@/lib/hooks/useStoreSettings";
-import type { PageRow } from "@/lib/types";
+import { usePagesNav } from "@/lib/hooks/usePagesNav";
 
 export default function Footer() {
   const { settings } = useStoreSettings();
-  const [navPages, setNavPages] = useState<PageRow[]>([]);
+  const { footerPages: navPages } = usePagesNav();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-
-  useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("pages")
-      .select("*")
-      .eq("show_in_footer", true)
-      .then(({ data }) => {
-        if (data) setNavPages(data as PageRow[]);
-      });
-  }, []);
 
   function handleSubscribe(e: React.FormEvent) {
     e.preventDefault();

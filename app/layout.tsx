@@ -4,6 +4,7 @@ import "./globals.css";
 import { StoreSettingsProvider } from "@/lib/hooks/useStoreSettings";
 import { PixelProvider } from "@/lib/hooks/usePixel";
 import { FormConfigProvider } from "@/lib/hooks/useFormConfig";
+import { PagesNavProvider } from "@/lib/hooks/usePagesNav";
 import PageViewTracker from "@/components/PageViewTracker";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -20,8 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StoreSettingsProvider>
           <PixelProvider>
             <FormConfigProvider>
-              <PageViewTracker />
-              {children}
+              <PagesNavProvider>
+                <PageViewTracker />
+                {children}
+              </PagesNavProvider>
             </FormConfigProvider>
           </PixelProvider>
         </StoreSettingsProvider>

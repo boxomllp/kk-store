@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
 
+export const revalidate = 60;
+
 export default async function CustomPage({ params }: { params: { slug: string } }) {
   const supabase = createClient();
   const { data: page } = await supabase

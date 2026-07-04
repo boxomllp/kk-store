@@ -6,27 +6,33 @@ import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/lib/types";
 import Link from "next/link";
 
-async function getSettings() {
-  const supabase = createClient();
-  const { data } = await supabase.from("store_settings").select("key,value");
-  const map: Record<string, string> = {};
-  (data ?? []).forEach((r) => (map[r.key] = r.value));
-  return map;
-}
+// Cache the rendered page for 60s so repeat visits are served instantly
+// from the edge instead of re-querying the database every time.
+export const revalidate = 60;
 
-async function getFeaturedProducts(featuredIds: string[]) {
+async function getHomeData() {
   const supabase = createClient();
-  if (!featuredIds.length) {
-    const { data } = await supabase
-      .from("products")
-      .select("*")
-      .eq("active", true)
-      .order("created_at", { ascending: false })
-      .limit(8);
-    return (data ?? []) as Product[];
+  const [{ data: settingsRows }, { data: allProducts }] = await Promise.all([
+    supabase.from("store_settings").select("key,value"),
+    supabase.from("products").select("*").eq("active", true).order("created_at", { ascending: false }).limit(20),
+  ]);
+
+  const settings: Record<string, string> = {};
+  (settingsRows ?? []).forEach((r) => (settings[r.key] = r.value));
+
+  let featuredIds: string[] = [];
+  try {
+    featuredIds = JSON.parse(settings.featured_products || "[]");
+  } catch {
+    featuredIds = [];
   }
-  const { data } = await supabase.from("products").select("*").in("id", featuredIds).eq("active", true);
-  return (data ?? []) as Product[];
+
+  const products = (allProducts ?? []) as Product[];
+  const featured = featuredIds.length
+    ? products.filter((p) => featuredIds.includes(p.id))
+    : products.slice(0, 8);
+
+  return { settings, products: featured };
 }
 
 function ImageSlot({
@@ -57,14 +63,7 @@ function ImageSlot({
 }
 
 export default async function HomePage() {
-  const settings = await getSettings();
-  let featuredIds: string[] = [];
-  try {
-    featuredIds = JSON.parse(settings.featured_products || "[]");
-  } catch {
-    featuredIds = [];
-  }
-  const products = await getFeaturedProducts(featuredIds);
+  const { settings, products } = await getHomeData();
   const storeName = settings.store_name || "Our Store";
 
   return (
