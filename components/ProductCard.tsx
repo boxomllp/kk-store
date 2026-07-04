@@ -23,8 +23,8 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         )}
         {discount > 0 && (
-          <span className="absolute top-2 left-2 bg-cta text-white text-xs font-bold px-2 py-1 rounded-full">
-            {discount}% OFF
+          <span className="absolute top-2 left-2 bg-saleRed text-white text-xs font-bold px-2 py-1 rounded-full">
+            SAVE {discount}%
           </span>
         )}
       </div>

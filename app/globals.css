@@ -57,12 +57,45 @@ body {
 
 /* ---------- Buy Now pulse button ---------- */
 @keyframes pulse-orange {
-  0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.5); }
-  70% { box-shadow: 0 0 0 12px rgba(234, 88, 12, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(242, 169, 59, 0.55); }
+  70% { box-shadow: 0 0 0 12px rgba(242, 169, 59, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(242, 169, 59, 0); }
 }
 .btn-pulse {
   animation: pulse-orange 1.8s infinite;
+}
+
+/* ---------- Wavy section dividers ---------- */
+.wave-divider-bottom {
+  position: relative;
+}
+.wave-divider-bottom::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 60px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C360,110 1080,-10 1440,50 L1440,100 L0,100 Z' fill='%23F2A93B'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.wave-divider-top {
+  position: relative;
+}
+.wave-divider-top::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C400,-10 1040,110 1440,30 L1440,0 L0,0 Z' fill='white'/%3E%3C/svg%3E");
+  pointer-events: none;
+  transform: translateY(-100%);
 }
 
 /* Prevent background scroll when mobile popup is open */

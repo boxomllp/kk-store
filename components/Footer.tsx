@@ -9,6 +9,8 @@ import type { PageRow } from "@/lib/types";
 export default function Footer() {
   const { settings } = useStoreSettings();
   const [navPages, setNavPages] = useState<PageRow[]>([]);
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -21,29 +23,23 @@ export default function Footer() {
       });
   }, []);
 
-  const socials = [
-    { url: settings.instagram_url, label: "Instagram" },
-    { url: settings.facebook_url, label: "Facebook" },
-    { url: settings.youtube_url, label: "YouTube" },
-    { url: settings.footer_whatsapp_url, label: "WhatsApp" },
-  ].filter((s) => s.url);
+  function handleSubscribe(e: React.FormEvent) {
+    e.preventDefault();
+    if (email) setSubscribed(true);
+  }
 
   return (
     <footer
       style={{ backgroundColor: settings.footer_bg_color, color: settings.footer_text_color }}
-      className="mt-16"
+      className="wave-divider-top mt-24 pt-14"
     >
-      <div className="max-w-6xl mx-auto px-4 py-10 grid gap-8 sm:grid-cols-3">
+      <div className="max-w-6xl mx-auto px-4 pb-10 grid gap-10 sm:grid-cols-2">
         <div>
-          <h3 className="font-bold text-lg mb-2">{settings.store_name}</h3>
-          <p className="text-sm opacity-80">{settings.footer_description}</p>
-        </div>
-        <div>
-          <h4 className="font-semibold mb-2">Links</h4>
-          <ul className="space-y-1 text-sm">
+          <h3 className="font-extrabold text-2xl mb-4">Quick links</h3>
+          <ul className="space-y-2 text-sm font-medium">
             {navPages.map((p) => (
               <li key={p.id}>
-                <Link href={`/${p.slug}`} className="opacity-80 hover:opacity-100">
+                <Link href={`/${p.slug}`} className="opacity-90 hover:opacity-100">
                   {p.title}
                 </Link>
               </li>
@@ -51,19 +47,28 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold mb-2">Follow Us</h4>
-          <ul className="space-y-1 text-sm">
-            {socials.map((s) => (
-              <li key={s.label}>
-                <a href={s.url} target="_blank" rel="noreferrer" className="opacity-80 hover:opacity-100">
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <h3 className="font-extrabold text-2xl mb-4">Subscribe to our emails</h3>
+          <p className="text-sm opacity-90 mb-4">Join our email list for exclusive offers and the latest news.</p>
+          {subscribed ? (
+            <p className="text-sm font-semibold">Thanks for subscribing! 🎉</p>
+          ) : (
+            <form onSubmit={handleSubscribe} className="max-w-sm">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                className="w-full bg-transparent border border-white/60 placeholder-white/80 rounded-lg px-4 py-3 mb-3 outline-none"
+              />
+              <button type="submit" className="w-full bg-white text-cta font-bold rounded-lg py-3">
+                Sign up
+              </button>
+            </form>
+          )}
         </div>
       </div>
-      <div className="text-center text-xs opacity-60 py-4 border-t border-white/10">
+      <div className="text-center text-xs opacity-90 py-4 border-t border-white/20">
         {settings.copyright_text}
       </div>
     </footer>

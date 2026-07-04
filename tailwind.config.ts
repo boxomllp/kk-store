@@ -8,8 +8,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navy: "#0f172a",
-        cta: "#ea580c",
+        navy: "#1a1a1a",
+        cta: "#F2A93B",
+        ctadark: "#E09420",
+        saleRed: "#E5383B",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

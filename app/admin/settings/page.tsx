@@ -124,7 +124,7 @@ export default function AdminSettingsPage() {
 
         {tab === "Homepage" && (
           <>
-            <FileField label="Hero Image" value={settings.hero_image} onChange={(v) => set("hero_image", v)} onUpload={(f) => uploadFile("hero_image", f)} />
+            <FileField label="Hero Image (recommended 1600×1200px)" value={settings.hero_image} onChange={(v) => set("hero_image", v)} onUpload={(f) => uploadFile("hero_image", f)} />
             <Field label="Hero Headline" value={settings.hero_headline} onChange={(v) => set("hero_headline", v)} />
             <Field label="Hero Subheadline" value={settings.hero_subheadline} onChange={(v) => set("hero_subheadline", v)} textarea />
             <Field label="CTA Button Text" value={settings.hero_cta_text} onChange={(v) => set("hero_cta_text", v)} />
@@ -142,6 +142,13 @@ export default function AdminSettingsPage() {
             </div>
             <Field label="Homepage Meta Title" value={settings.homepage_meta_title} onChange={(v) => set("homepage_meta_title", v)} />
             <Field label="Homepage Meta Description" value={settings.homepage_meta_description} onChange={(v) => set("homepage_meta_description", v)} textarea />
+            <div className="border-t pt-4">
+              <p className="text-sm font-semibold text-navy mb-2">Secondary Banner Section</p>
+              <FileField label="Banner Image (recommended 1200×900px)" value={settings.secondary_banner_image} onChange={(v) => set("secondary_banner_image", v)} onUpload={(f) => uploadFile("secondary_banner_image", f)} />
+              <div className="mt-3">
+                <Field label="Banner Heading" value={settings.secondary_banner_heading} onChange={(v) => set("secondary_banner_heading", v)} />
+              </div>
+            </div>
           </>
         )}
 

@@ -89,7 +89,9 @@ export default function ProductPageClient({ product }: { product: Product }) {
             {comparePrice && comparePrice > price && (
               <>
                 <span className="text-gray-400 line-through text-lg">₹{comparePrice}</span>
-                <span className="text-green-600 font-semibold text-sm">{discount}% OFF</span>
+                <span className="bg-saleRed text-white text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                  🏷️ SAVE {discount}%
+                </span>
               </>
             )}
           </div>
@@ -129,10 +131,11 @@ export default function ProductPageClient({ product }: { product: Product }) {
           <div ref={buyBtnRef} className="mt-6">
             <button
               onClick={() => setShowPopup(true)}
-              className="btn-pulse w-full bg-cta text-white rounded-full"
-              style={{ padding: "20px 40px", fontSize: 22, fontWeight: 800 }}
+              className="btn-pulse w-full bg-cta text-white rounded-2xl border-2 border-black/10 flex flex-col items-center gap-0.5"
+              style={{ padding: "16px 24px" }}
             >
-              Buy It Now
+              <span className="font-extrabold text-lg flex items-center gap-2">🛍️ Order Now — Cash on Delivery</span>
+              <span className="text-xs font-medium opacity-90">Fast Free Shipping | High Quality</span>
             </button>
           </div>
 
