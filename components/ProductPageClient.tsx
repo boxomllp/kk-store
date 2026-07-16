@@ -53,13 +53,20 @@ export default function ProductPageClient({ product }: { product: Product }) {
       <AnnouncementBar />
       <Header />
 
+      <main>
       <div className="max-w-6xl mx-auto px-4 py-6 grid sm:grid-cols-2 gap-8">
         {/* Gallery */}
         <div>
           <div className="aspect-square rounded-xl overflow-hidden bg-gray-100">
             {product.images?.[activeImage] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={product.images[activeImage]} alt={product.name} className="w-full h-full object-cover" />
+              <img
+                src={product.images[activeImage]}
+                alt={product.name}
+                className="w-full h-full object-cover"
+                fetchPriority="high"
+                loading="eager"
+              />
             ) : null}
           </div>
           {product.images?.length > 1 && (
@@ -88,7 +95,7 @@ export default function ProductPageClient({ product }: { product: Product }) {
             <span className="text-2xl font-extrabold text-navy">₹{price}</span>
             {comparePrice && comparePrice > price && (
               <>
-                <span className="text-gray-400 line-through text-lg">₹{comparePrice}</span>
+                <span className="text-gray-500 line-through text-lg">₹{comparePrice}</span>
                 <span className="bg-saleRed text-white text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                   🏷️ SAVE {discount}%
                 </span>
@@ -100,7 +107,7 @@ export default function ProductPageClient({ product }: { product: Product }) {
             <ul className="mt-4 space-y-1">
               {bullets.map((b, i) => (
                 <li key={i} className="flex gap-2 text-sm text-gray-700">
-                  <span className="text-cta font-bold">✓</span>
+                  <span className="text-ctatext font-bold">✓</span>
                   <span>{b}</span>
                 </li>
               ))}
@@ -131,7 +138,7 @@ export default function ProductPageClient({ product }: { product: Product }) {
           <div ref={buyBtnRef} className="mt-6">
             <button
               onClick={() => setShowPopup(true)}
-              className="btn-pulse w-full bg-cta text-white rounded-2xl border-2 border-black/10 flex flex-col items-center gap-0.5"
+              className="btn-pulse w-full bg-cta text-navy rounded-2xl border-2 border-black/10 flex flex-col items-center gap-0.5"
               style={{ padding: "16px 24px" }}
             >
               <span className="font-extrabold text-lg flex items-center gap-2">🛍️ Order Now — Cash on Delivery</span>
@@ -162,7 +169,7 @@ export default function ProductPageClient({ product }: { product: Product }) {
               key={t.key}
               onClick={() => setActiveTab(t.key as any)}
               className={`pb-3 px-1 text-sm font-medium whitespace-nowrap border-b-2 ${
-                activeTab === t.key ? "border-cta text-cta" : "border-transparent text-gray-500"
+                activeTab === t.key ? "border-cta text-ctatext" : "border-transparent text-gray-500"
               }`}
             >
               {t.label}
@@ -189,6 +196,7 @@ export default function ProductPageClient({ product }: { product: Product }) {
           )}
         </div>
       </div>
+      </main>
 
       {/* Sticky bottom bar */}
       {showSticky && !showPopup && (
@@ -198,7 +206,7 @@ export default function ProductPageClient({ product }: { product: Product }) {
         >
           <button
             onClick={() => setShowPopup(true)}
-            className="btn-pulse bg-cta text-white font-bold px-6 py-2.5 rounded-full text-sm"
+            className="btn-pulse bg-cta text-navy font-bold px-6 py-2.5 rounded-full text-sm"
           >
             Buy It Now
           </button>

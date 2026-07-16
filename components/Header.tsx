@@ -20,7 +20,7 @@ export default function Header() {
           <Link
             href="/"
             className={`px-3 py-1.5 rounded-full transition-colors ${
-              pathname === "/" ? "bg-cta text-white" : "hover:bg-gray-100"
+              pathname === "/" ? "bg-cta text-navy" : "hover:bg-gray-100"
             }`}
           >
             Home
@@ -30,7 +30,7 @@ export default function Header() {
               key={p.id}
               href={`/${p.slug}`}
               className={`px-3 py-1.5 rounded-full transition-colors ${
-                pathname === `/${p.slug}` ? "bg-cta text-white" : "hover:bg-gray-100"
+                pathname === `/${p.slug}` ? "bg-cta text-navy" : "hover:bg-gray-100"
               }`}
             >
               {p.title}
@@ -47,7 +47,7 @@ export default function Header() {
               <span className="text-xl -rotate-6">🛍️</span>
               <div className="flex flex-col leading-none">
                 <span className="font-extrabold text-sm tracking-wide">{settings.store_name}</span>
-                <span className="text-[9px] text-cta tracking-widest">EST. 2026</span>
+                <span className="text-[9px] text-ctatext tracking-widest">EST. 2026</span>
               </div>
             </div>
           )}

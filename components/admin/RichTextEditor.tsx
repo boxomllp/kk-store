@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
-import { createClient } from "@/lib/supabase/client";
+import { uploadImage } from "@/lib/uploadImage";
 import {
   Bold as BoldIcon,
   Italic as ItalicIcon,
@@ -43,19 +43,18 @@ export default function RichTextEditor({
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file || !editor) return;
-    const supabase = createClient();
     const path = `content/${Date.now()}-${file.name}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, file);
-    if (error) return;
-    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
-    editor.chain().focus().setImage({ src: data.publicUrl }).run();
+    const url = await uploadImage(file, path);
+    if (!url) return;
+    const alt = window.prompt("Describe this image (for accessibility & SEO):", "") || "";
+    editor.chain().focus().setImage({ src: url, alt }).run();
     e.target.value = "";
   }
 
   if (!editor) return null;
 
   const btn = (active: boolean) =>
-    `p-1.5 rounded hover:bg-gray-200 ${active ? "bg-gray-200 text-cta" : "text-gray-600"}`;
+    `p-1.5 rounded hover:bg-gray-200 ${active ? "bg-gray-200 text-ctatext" : "text-gray-600"}`;
 
   return (
     <div className="border rounded-lg overflow-hidden">

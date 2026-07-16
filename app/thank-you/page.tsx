@@ -17,14 +17,14 @@ function ThankYouContent() {
   return (
     <>
       <Header />
-      <div className="max-w-xl mx-auto px-4 py-16 text-center">
+      <main className="max-w-xl mx-auto px-4 py-16 text-center">
         <p className="text-5xl mb-2">🎉</p>
         <h1 className="text-2xl font-bold text-navy">Order Confirmed!</h1>
         <p className="text-gray-500 mt-2">Your order has been placed successfully</p>
 
         <div className="mt-6 rounded-xl border bg-gray-50 p-5 text-left space-y-2">
           <p className="text-sm text-gray-500">Order Number</p>
-          <p className="font-bold text-lg text-cta">#{order}</p>
+          <p className="font-bold text-lg text-ctatext">#{order}</p>
 
           <div className="border-t pt-3 mt-3">
             <p className="font-medium">{product}</p>
@@ -43,7 +43,7 @@ function ThankYouContent() {
         <div className="mt-6">
           <DeliveryTimeline />
         </div>
-      </div>
+      </main>
       <Footer />
     </>
   );

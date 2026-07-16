@@ -172,7 +172,7 @@ export default function AdminPagesPage() {
                     <input type="checkbox" checked={p.show_in_footer} onChange={() => toggleFlag(p, "show_in_footer")} />
                   </td>
                   <td className="px-4 py-2 space-x-3">
-                    <button onClick={() => { setEditing(p); setCreating(false); }} className="text-cta font-medium">Edit</button>
+                    <button onClick={() => { setEditing(p); setCreating(false); }} className="text-ctatext font-medium">Edit</button>
                     <button onClick={() => handleDelete(p.id)} className="text-red-500 font-medium">Delete</button>
                   </td>
                 </tr>

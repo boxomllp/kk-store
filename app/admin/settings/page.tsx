@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { uploadImage } from "@/lib/uploadImage";
 import type { Product } from "@/lib/types";
 
 const TABS = ["General", "Header & Announcement", "Homepage", "Footer", "Delivery & Shipping", "Trust Badges"] as const;
@@ -34,12 +35,9 @@ export default function AdminSettingsPage() {
   }
 
   async function uploadFile(key: string, file: File) {
-    const supabase = createClient();
     const path = `settings/${key}-${Date.now()}-${file.name}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, file);
-    if (error) return;
-    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
-    set(key, data.publicUrl);
+    const url = await uploadImage(file, path);
+    if (url) set(key, url);
   }
 
   async function handleSaveAll() {
@@ -89,7 +87,7 @@ export default function AdminSettingsPage() {
             key={t}
             onClick={() => setTab(t)}
             className={`px-3 py-2 text-sm whitespace-nowrap border-b-2 ${
-              tab === t ? "border-cta text-cta font-medium" : "border-transparent text-gray-500"
+              tab === t ? "border-cta text-ctatext font-medium" : "border-transparent text-gray-500"
             }`}
           >
             {t}

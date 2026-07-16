@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { uploadImage } from "@/lib/uploadImage";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 import type { Product, VariantOption } from "@/lib/types";
 
@@ -61,11 +62,8 @@ export default function ProductForm({ product }: Props) {
     const urls: string[] = [];
     for (const file of Array.from(files)) {
       const path = `products/${Date.now()}-${file.name}`;
-      const { error: upErr } = await supabase.storage.from("product-images").upload(path, file);
-      if (!upErr) {
-        const { data } = supabase.storage.from("product-images").getPublicUrl(path);
-        urls.push(data.publicUrl);
-      }
+      const url = await uploadImage(file, path);
+      if (url) urls.push(url);
     }
     setImages((prev) => [...prev, ...urls]);
     setUploading(false);
@@ -194,7 +192,7 @@ export default function ProductForm({ product }: Props) {
       <div className="bg-white border rounded-xl p-5 space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-navy">FAQs</h2>
-          <button onClick={addFaq} className="text-sm text-cta font-medium">+ Add FAQ</button>
+          <button onClick={addFaq} className="text-sm text-ctatext font-medium">+ Add FAQ</button>
         </div>
         {faqs.map((f, i) => (
           <div key={i} className="border rounded-lg p-3 space-y-2">
@@ -301,7 +299,7 @@ export default function ProductForm({ product }: Props) {
                 <button onClick={() => removeVariantOption(i)} className="text-red-500 text-sm">Remove</button>
               </div>
             ))}
-            <button onClick={addVariantOption} className="text-sm text-cta font-medium">+ Add Option</button>
+            <button onClick={addVariantOption} className="text-sm text-ctatext font-medium">+ Add Option</button>
           </>
         )}
       </div>

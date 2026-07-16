@@ -33,7 +33,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="flex items-center gap-2 mt-1">
           <span className="font-bold text-navy">₹{product.price}</span>
           {product.compare_price && product.compare_price > product.price && (
-            <span className="text-gray-400 line-through text-sm">₹{product.compare_price}</span>
+            <span className="text-gray-500 line-through text-sm">₹{product.compare_price}</span>
           )}
         </div>
       </div>

@@ -75,7 +75,7 @@ export default function AdminProductsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-2 space-x-3">
-                    <Link href={`/admin/products/${p.id}`} className="text-cta font-medium">
+                    <Link href={`/admin/products/${p.id}`} className="text-ctatext font-medium">
                       Edit
                     </Link>
                     <button onClick={() => handleDelete(p.id)} className="text-red-500 font-medium">

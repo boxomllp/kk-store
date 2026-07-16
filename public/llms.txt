@@ -1,0 +1,13 @@
+# KK Store
+
+KK Store is an Indian D2C e-commerce store offering quality products with
+Cash on Delivery, fast shipping, and secure checkout.
+
+## Pages
+
+- [Home](https://kk-store.vercel.app/)
+- [About Us](https://kk-store.vercel.app/about-us)
+- [Contact](https://kk-store.vercel.app/contact)
+- [Privacy Policy](https://kk-store.vercel.app/privacy-policy)
+- [Terms & Conditions](https://kk-store.vercel.app/terms-and-conditions)
+- [Refund & Return Policy](https://kk-store.vercel.app/refund-and-return-policy)

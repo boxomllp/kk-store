@@ -11,7 +11,8 @@ const config: Config = {
         navy: "#1a1a1a",
         cta: "#F2A93B",
         ctadark: "#E09420",
-        saleRed: "#E5383B",
+        ctatext: "#B45309",
+        saleRed: "#C62828",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

@@ -71,12 +71,13 @@ export default async function HomePage() {
       <AnnouncementBar />
       <Header />
 
+      <main>
       {/* HERO */}
       <section className="relative bg-white wave-divider-bottom pb-20 overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 py-12 sm:py-16 grid sm:grid-cols-2 gap-8 items-center relative z-10">
           <div>
             <h1
-              className="text-4xl sm:text-5xl font-extrabold leading-tight text-cta"
+              className="text-4xl sm:text-5xl font-extrabold leading-tight text-ctatext"
               style={{ textShadow: "2px 2px 0px rgba(0,0,0,0.08)" }}
             >
               {settings.hero_headline || `Discover the Latest from ${storeName}!`}
@@ -125,7 +126,7 @@ export default async function HomePage() {
       {/* RESULTS / STATS SECTION */}
       <section className="max-w-6xl mx-auto px-4 py-14 grid sm:grid-cols-2 gap-12">
         <div>
-          <h3 className="text-lg font-bold text-cta mb-2">Results heading</h3>
+          <h3 className="text-lg font-bold text-ctatext mb-2">Results heading</h3>
           <h2 className="text-4xl font-extrabold text-navy mb-6">Results</h2>
           <p className="text-gray-600 text-lg">
             At <strong>{storeName}</strong>, we don&apos;t just sell products — we change everyday life for
@@ -141,7 +142,7 @@ export default async function HomePage() {
             "Transparent Shopping Experience",
           ].map((text) => (
             <div key={text} className="flex items-center gap-5 py-4">
-              <div className="w-16 h-16 rounded-full border-4 border-cta flex items-center justify-center font-bold text-cta shrink-0">
+              <div className="w-16 h-16 rounded-full border-4 border-cta flex items-center justify-center font-bold text-ctatext shrink-0">
                 90%
               </div>
               <span className="font-medium text-navy">{text}</span>
@@ -151,7 +152,7 @@ export default async function HomePage() {
       </section>
 
       {/* TRUST MARQUEE STRIP */}
-      <section className="bg-cta text-white py-3 overflow-hidden">
+      <section className="bg-cta text-navy py-3 overflow-hidden">
         <div className="flex flex-wrap justify-center gap-x-10 gap-y-1 text-sm font-bold px-4">
           <span>💡 Smart Solutions for Daily Problems</span>
           <span>💯 Quality Tested · Customer Approved</span>
@@ -169,7 +170,7 @@ export default async function HomePage() {
         />
         <h2 className="text-3xl sm:text-4xl font-extrabold text-navy order-1 sm:order-2">
           {settings.secondary_banner_heading || "Smart. Stylish. Affordable."}{" "}
-          <span className="text-cta">Make Your Home Trendy!</span>
+          <span className="text-ctatext">Make Your Home Trendy!</span>
         </h2>
       </section>
 
@@ -179,7 +180,7 @@ export default async function HomePage() {
           Why {storeName} Is Better Than Other Brands
         </h2>
         <div className="border rounded-2xl overflow-hidden relative">
-          <div className="absolute top-0 right-16 bg-cta text-white text-center font-bold text-sm rounded-b-xl px-4 py-2 -translate-y-0">
+          <div className="absolute top-0 right-16 bg-cta text-navy text-center font-bold text-sm rounded-b-xl px-4 py-2 -translate-y-0">
             {storeName}
           </div>
           <table className="w-full text-sm">
@@ -194,7 +195,7 @@ export default async function HomePage() {
               {["Product Details & Transparency", "Trust & Safety Score", "Secure Payments"].map((row) => (
                 <tr key={row} className="border-t">
                   <td className="p-4 font-semibold text-navy">{row}</td>
-                  <td className="p-4 text-center text-cta font-bold">✓</td>
+                  <td className="p-4 text-center text-ctatext font-bold">✓</td>
                   <td className="p-4 text-center text-gray-400 font-bold">✕</td>
                 </tr>
               ))}
@@ -211,7 +212,7 @@ export default async function HomePage() {
           { title: "Secure Payments", desc: "100% safe checkout with trusted payment options" },
         ].map((item) => (
           <div key={item.title}>
-            <div className="w-12 h-12 mx-auto rounded-full bg-cta text-white flex items-center justify-center font-bold mb-3">
+            <div className="w-12 h-12 mx-auto rounded-full bg-cta text-navy flex items-center justify-center font-bold mb-3">
               ✓
             </div>
             <h4 className="font-bold text-navy mb-1">{item.title}</h4>
@@ -219,6 +220,7 @@ export default async function HomePage() {
           </div>
         ))}
       </section>
+      </main>
 
       <Footer />
     </>

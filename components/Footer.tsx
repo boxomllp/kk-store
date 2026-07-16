@@ -49,7 +49,7 @@ export default function Footer() {
                 placeholder="Email"
                 className="w-full bg-transparent border border-white/60 placeholder-white/80 rounded-lg px-4 py-3 mb-3 outline-none"
               />
-              <button type="submit" className="w-full bg-white text-cta font-bold rounded-lg py-3">
+              <button type="submit" className="w-full bg-white text-ctatext font-bold rounded-lg py-3">
                 Sign up
               </button>
             </form>

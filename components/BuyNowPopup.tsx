@@ -336,7 +336,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
             <div className="rounded-lg bg-gray-50 p-3 mb-4 text-sm">
               <p className="font-medium">{productName}</p>
               {variant && <p className="text-gray-500">{variant}</p>}
-              <p className="font-bold text-cta text-lg">₹{price}</p>
+              <p className="font-bold text-ctatext text-lg">₹{price}</p>
             </div>
 
             {settings.show_delivery_timeline_popup === "true" && (
@@ -454,7 +454,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
                 {otpError.toLowerCase().includes("expired") && (
                   <button
                     onClick={() => resendOtp(values.phone)}
-                    className="text-cta text-sm font-medium underline mt-1"
+                    className="text-ctatext text-sm font-medium underline mt-1"
                   >
                     Resend OTP
                   </button>
@@ -467,7 +467,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
               {resendSeconds > 0 ? (
                 <p className="text-sm text-gray-400">Resend in {resendSeconds}s</p>
               ) : (
-                <button onClick={() => resendOtp(values.phone)} className="text-cta text-sm font-medium underline">
+                <button onClick={() => resendOtp(values.phone)} className="text-ctatext text-sm font-medium underline">
                   Resend OTP
                 </button>
               )}
@@ -510,7 +510,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
             <button
               disabled={sendingOtp || otpDigits.some((d) => !d) || verifying}
               onClick={() => submitOtp(otpDigits.join(""))}
-              className="w-full bg-cta text-white font-bold py-3 rounded-full disabled:opacity-40"
+              className="w-full bg-cta text-navy font-bold py-3 rounded-full disabled:opacity-40"
             >
               {verifying ? "Verifying..." : settings.confirm_button_text || "Confirm Order"}
             </button>
@@ -534,7 +534,7 @@ function BuyButton({
     <button
       onClick={onClick}
       disabled={submitting}
-      className="btn-pulse w-full bg-cta text-white rounded-full disabled:opacity-60"
+      className="btn-pulse w-full bg-cta text-navy rounded-full disabled:opacity-60"
       style={{ padding: "20px 40px", fontSize: 22, fontWeight: 800 }}
     >
       {submitting ? "Please wait..." : text || "Buy It Now"}

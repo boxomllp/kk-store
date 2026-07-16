@@ -15,8 +15,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        {supabaseUrl && <link rel="preconnect" href={supabaseUrl} />}
+        {supabaseUrl && <link rel="dns-prefetch" href={supabaseUrl} />}
+      </head>
       <body>
         <StoreSettingsProvider>
           <PixelProvider>

@@ -217,7 +217,7 @@ export default function AdminOrdersPage() {
                     </select>
                   </td>
                   <td className="px-3 py-2">
-                    <button onClick={() => setDetailOrder(o)} className="text-cta font-medium">View</button>
+                    <button onClick={() => setDetailOrder(o)} className="text-ctatext font-medium">View</button>
                   </td>
                 </tr>
               ))}
