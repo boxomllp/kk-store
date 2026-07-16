@@ -60,13 +60,18 @@ export default function ProductForm({ product }: Props) {
     if (!files?.length) return;
     setUploading(true);
     const urls: string[] = [];
+    const failedNames: string[] = [];
     for (const file of Array.from(files)) {
       const path = `products/${Date.now()}-${file.name}`;
-      const url = await uploadImage(file, path);
+      const { url, error: uploadErr } = await uploadImage(file, path);
       if (url) urls.push(url);
+      else failedNames.push(`${file.name}${uploadErr ? ` (${uploadErr})` : ""}`);
     }
     setImages((prev) => [...prev, ...urls]);
     setUploading(false);
+    if (failedNames.length) {
+      setError(`Failed to upload: ${failedNames.join(", ")}`);
+    }
     e.target.value = "";
   }
 

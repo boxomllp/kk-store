@@ -6,9 +6,10 @@ import { createClient } from "@/lib/supabase/client";
  * Caps the longest edge at maxDimension and re-encodes as JPEG/WebP at the
  * given quality. Falls back to the original file if compression fails.
  */
-async function compressImage(file: File, maxDimension = 1600, quality = 0.8): Promise<Blob> {
+async function compressImage(file: File, maxDimension = 1600, quality = 0.8): Promise<File | Blob> {
   // Don't try to re-compress SVGs — they're vector and already tiny.
   if (file.type === "image/svg+xml") return file;
+  if (typeof window === "undefined" || typeof createImageBitmap === "undefined") return file;
 
   try {
     const bitmap = await createImageBitmap(file);
@@ -26,16 +27,24 @@ async function compressImage(file: File, maxDimension = 1600, quality = 0.8): Pr
     const ctx = canvas.getContext("2d");
     if (!ctx) return file;
     ctx.drawImage(bitmap, 0, 0, width, height);
+    bitmap.close?.();
 
     const outputType = file.type === "image/png" ? "image/png" : "image/jpeg";
     const blob: Blob | null = await new Promise((resolve) =>
       canvas.toBlob(resolve, outputType, quality)
     );
-    return blob ?? file;
-  } catch {
+    // Only use the compressed version if it's actually smaller — otherwise
+    // keep the original (protects against edge cases where re-encoding
+    // bloats the file, e.g. already-optimized images).
+    if (blob && blob.size > 0 && blob.size < file.size) return blob;
+    return file;
+  } catch (err) {
+    console.error("Image compression failed, uploading original file instead:", err);
     return file;
   }
 }
+
+export type UploadResult = { url: string | null; error?: string };
 
 /**
  * Compress + upload an image to a Supabase Storage bucket with a
@@ -46,18 +55,26 @@ export async function uploadImage(
   file: File,
   path: string,
   bucket = "product-images"
-): Promise<string | null> {
-  const supabase = createClient();
-  const compressed = await compressImage(file);
+): Promise<UploadResult> {
+  try {
+    const supabase = createClient();
+    const compressed = await compressImage(file);
 
-  const { error } = await supabase.storage.from(bucket).upload(path, compressed, {
-    cacheControl: "31536000", // 1 year — safe since each upload gets a unique path
-    upsert: false,
-    contentType: file.type === "image/png" ? "image/png" : "image/jpeg",
-  });
+    const { error } = await supabase.storage.from(bucket).upload(path, compressed, {
+      cacheControl: "31536000", // 1 year — safe since each upload gets a unique path
+      upsert: false,
+      contentType: file.type === "image/png" ? "image/png" : "image/jpeg",
+    });
 
-  if (error) return null;
+    if (error) {
+      console.error("Supabase storage upload failed:", error);
+      return { url: null, error: error.message };
+    }
 
-  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-  return data.publicUrl;
+    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    return { url: data.publicUrl };
+  } catch (err: any) {
+    console.error("Unexpected upload error:", err);
+    return { url: null, error: err?.message || "Unexpected error during upload" };
+  }
 }

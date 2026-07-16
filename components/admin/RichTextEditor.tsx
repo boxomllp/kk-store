@@ -44,8 +44,12 @@ export default function RichTextEditor({
     const file = e.target.files?.[0];
     if (!file || !editor) return;
     const path = `content/${Date.now()}-${file.name}`;
-    const url = await uploadImage(file, path);
-    if (!url) return;
+    const { url, error } = await uploadImage(file, path);
+    if (!url) {
+      window.alert(`Image upload failed: ${error || "unknown error"}`);
+      e.target.value = "";
+      return;
+    }
     const alt = window.prompt("Describe this image (for accessibility & SEO):", "") || "";
     editor.chain().focus().setImage({ src: url, alt }).run();
     e.target.value = "";
