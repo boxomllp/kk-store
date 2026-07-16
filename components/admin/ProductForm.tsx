@@ -62,8 +62,7 @@ export default function ProductForm({ product }: Props) {
     const urls: string[] = [];
     const failedNames: string[] = [];
     for (const file of Array.from(files)) {
-      const path = `products/${Date.now()}-${file.name}`;
-      const { url, error: uploadErr } = await uploadImage(file, path);
+      const { url, error: uploadErr } = await uploadImage(file, "products");
       if (url) urls.push(url);
       else failedNames.push(`${file.name}${uploadErr ? ` (${uploadErr})` : ""}`);
     }

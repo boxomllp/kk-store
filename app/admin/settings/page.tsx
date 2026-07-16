@@ -35,8 +35,7 @@ export default function AdminSettingsPage() {
   }
 
   async function uploadFile(key: string, file: File) {
-    const path = `settings/${key}-${Date.now()}-${file.name}`;
-    const { url, error } = await uploadImage(file, path);
+    const { url, error } = await uploadImage(file, `settings/${key}`);
     if (url) set(key, url);
     else window.alert(`Image upload failed: ${error || "unknown error"}`);
   }

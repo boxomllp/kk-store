@@ -43,8 +43,7 @@ export default function RichTextEditor({
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file || !editor) return;
-    const path = `content/${Date.now()}-${file.name}`;
-    const { url, error } = await uploadImage(file, path);
+    const { url, error } = await uploadImage(file, "content");
     if (!url) {
       window.alert(`Image upload failed: ${error || "unknown error"}`);
       e.target.value = "";
