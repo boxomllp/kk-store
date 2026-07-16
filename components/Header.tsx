@@ -47,7 +47,7 @@ export default function Header() {
               <span className="text-xl -rotate-6">🛍️</span>
               <div className="flex flex-col leading-none">
                 <span className="font-extrabold text-sm tracking-wide">{settings.store_name}</span>
-                <span className="text-[9px] text-ctatext tracking-widest">EST. 2026</span>
+                <span className="text-[9px] text-cta tracking-widest">EST. 2026</span>
               </div>
             </div>
           )}
