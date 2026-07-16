@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 export type StoreSettings = Record<string, string>;
 
 const DEFAULTS: StoreSettings = {
-  store_name: "KK Store",
+  store_name: "Kleezo Shop",
   logo_url: "",
   favicon_url: "",
   contact_email: "",
@@ -21,12 +21,12 @@ const DEFAULTS: StoreSettings = {
   announcement_link: "",
   announcement_show: "true",
   hero_image: "",
-  hero_headline: "Welcome to KK Store",
+  hero_headline: "Welcome to Kleezo Shop",
   hero_subheadline: "Quality products, delivered to your door",
   hero_cta_text: "Shop Now",
   hero_cta_link: "/products",
   featured_products: "[]",
-  homepage_meta_title: "KK Store",
+  homepage_meta_title: "Kleezo Shop",
   homepage_meta_description: "Shop the best products with COD",
   footer_description: "",
   instagram_url: "",
@@ -35,7 +35,7 @@ const DEFAULTS: StoreSettings = {
   footer_whatsapp_url: "",
   footer_bg_color: "#F2A93B",
   footer_text_color: "#1a1a1a",
-  copyright_text: "© 2026 KK Store. All rights reserved.",
+  copyright_text: "© 2026 Kleezo Shop. All rights reserved.",
   order_ready_days: "1",
   delivery_days: "4",
   free_shipping_above: "999",

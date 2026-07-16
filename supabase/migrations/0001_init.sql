@@ -236,7 +236,7 @@ on conflict do nothing;
 -- Default store_settings keys (so storefront never breaks on empty DB)
 -- =========================================================
 insert into store_settings (key, value) values
-  ('store_name', 'KK Store'),
+  ('store_name', 'Kleezo Shop'),
   ('logo_url', ''),
   ('favicon_url', ''),
   ('contact_email', ''),
@@ -256,7 +256,7 @@ insert into store_settings (key, value) values
   ('hero_cta_text', 'Shop Now'),
   ('hero_cta_link', '/products'),
   ('featured_products', '[]'),
-  ('homepage_meta_title', 'KK Store'),
+  ('homepage_meta_title', 'Kleezo Shop'),
   ('homepage_meta_description', 'Shop the best products with COD'),
   ('footer_description', ''),
   ('instagram_url', ''),
@@ -265,7 +265,7 @@ insert into store_settings (key, value) values
   ('footer_whatsapp_url', ''),
   ('footer_bg_color', '#111111'),
   ('footer_text_color', '#ffffff'),
-  ('copyright_text', '© 2026 KK Store. All rights reserved.'),
+  ('copyright_text', '© 2026 Kleezo Shop. All rights reserved.'),
   ('order_ready_days', '1'),
   ('delivery_days', '4'),
   ('free_shipping_above', '999'),

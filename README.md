@@ -1,4 +1,4 @@
-# KK Store — Full Build (Next.js 14 + Supabase + Vercel)
+# Kleezo Shop — Full Build (Next.js 14 + Supabase + Vercel)
 
 Poora COD D2C e-commerce store, spec ke saare 17 build steps ke saath complete.
 

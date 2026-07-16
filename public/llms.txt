@@ -1,6 +1,6 @@
-# KK Store
+# Kleezo Shop
 
-KK Store is an Indian D2C e-commerce store offering quality products with
+Kleezo Shop is an Indian D2C e-commerce store offering quality products with
 Cash on Delivery, fast shipping, and secure checkout.
 
 ## Pages

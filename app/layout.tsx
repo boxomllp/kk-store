@@ -10,7 +10,7 @@ import PageViewTracker from "@/components/PageViewTracker";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "KK Store",
+  title: "Kleezo Shop",
   description: "Shop the best products with Cash on Delivery",
 };
 
