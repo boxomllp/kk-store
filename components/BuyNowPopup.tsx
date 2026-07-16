@@ -71,6 +71,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
   const [changingNumber, setChangingNumber] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [verifying, setVerifying] = useState(false);
+  const [sendingOtp, setSendingOtp] = useState(false);
 
   // --- lock body scroll on mount ---
   useEffect(() => {
@@ -180,6 +181,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
     setStep("otp");
     setOtpDigits(Array(otpLength).fill(""));
     setResendSeconds(30);
+    setSendingOtp(true);
 
     try {
       const { data: orderData, error: orderErr } = await supabase.functions.invoke("create-order", {
@@ -219,6 +221,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
       setApiError("Network error. Please tap Resend OTP.");
     } finally {
       setSubmitting(false);
+      setSendingOtp(false);
     }
   }
 
@@ -226,14 +229,16 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
     setApiError("");
     setOtpError("");
     setResendSeconds(30);
+    setSendingOtp(true);
     const { data, error } = await supabase.functions.invoke("send-otp", { body: { phone } });
     if (error || !data?.success) {
       setApiError(data?.error || "Failed to resend OTP");
     }
+    setSendingOtp(false);
   }
 
   async function handleChangeNumber() {
-    if (!/^\d{10}$/.test(newPhone)) {
+    if (!/^[6-9]\d{9}$/.test(newPhone)) {
       setApiError("Enter a valid 10-digit phone number");
       return;
     }
@@ -301,7 +306,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
     }
   }
 
-  const maskedPhone = values.phone ? `+91 ${values.phone.replace(/(\d{5})(\d{5})/, "$1XXXXX").slice(0, 10)}` : "";
+  const fullPhone = values.phone ? `+91 ${values.phone}` : "";
 
   return (
     <div
@@ -410,26 +415,37 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
               <p className="text-2xl">📱</p>
               <h2 className="text-lg font-bold text-navy mt-2">Verify Your Number</h2>
               <p className="text-sm text-gray-500 mt-1">
-                We've sent a {otpLength}-digit OTP to {maskedPhone}
+                We've sent a {otpLength}-digit OTP to {fullPhone}
               </p>
             </div>
 
             <div className="flex justify-center gap-3 my-6">
-              {otpDigits.map((d, i) => (
-                <input
-                  key={i}
-                  ref={(el) => {
-                    otpInputRefs.current[i] = el;
-                  }}
-                  value={d}
-                  onChange={(e) => handleOtpChange(i, e.target.value)}
-                  onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                  inputMode="numeric"
-                  maxLength={1}
-                  style={{ width: 52, height: 60 }}
-                  className="text-center text-2xl font-bold border-2 rounded-lg focus:border-cta outline-none"
-                />
-              ))}
+              {sendingOtp ? (
+                <div
+                  className="flex items-center gap-2 text-gray-500 border-2 rounded-lg px-6"
+                  style={{ height: 60 }}
+                >
+                  <span className="w-4 h-4 border-2 border-cta border-t-transparent rounded-full animate-spin" />
+                  <span className="text-sm font-medium">Sending OTP...</span>
+                </div>
+              ) : (
+                otpDigits.map((d, i) => (
+                  <input
+                    key={i}
+                    ref={(el) => {
+                      otpInputRefs.current[i] = el;
+                    }}
+                    value={d}
+                    onChange={(e) => handleOtpChange(i, e.target.value)}
+                    onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                    inputMode="numeric"
+                    maxLength={1}
+                    style={{ width: 52, height: 60 }}
+                    className="text-center text-2xl font-bold border-2 rounded-lg focus:border-cta outline-none"
+                    autoFocus={i === 0}
+                  />
+                ))
+              )}
             </div>
 
             {otpError && (
@@ -492,7 +508,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
             </button>
 
             <button
-              disabled={otpDigits.some((d) => !d) || verifying}
+              disabled={sendingOtp || otpDigits.some((d) => !d) || verifying}
               onClick={() => submitOtp(otpDigits.join(""))}
               className="w-full bg-cta text-white font-bold py-3 rounded-full disabled:opacity-40"
             >
