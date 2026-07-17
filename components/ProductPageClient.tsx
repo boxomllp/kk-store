@@ -201,17 +201,17 @@ export default function ProductPageClient({ product }: { product: Product }) {
       {/* Sticky bottom bar */}
       {showSticky && !showPopup && (
         <div
-          className="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-30 flex items-center justify-between px-4"
+          className="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-30 flex items-center justify-between gap-3 px-4"
           style={{ minHeight: 64 }}
         >
           <button
             onClick={() => setShowPopup(true)}
-            className="btn-pulse bg-cta text-navy font-bold px-6 py-2.5 rounded-full text-sm"
+            className="btn-pulse bg-cta text-navy font-bold px-6 py-2.5 rounded-full text-sm shrink-0"
           >
             Buy It Now
           </button>
-          <div className="text-right">
-            <p className="text-sm font-medium truncate max-w-[140px]">{product.name}</p>
+          <div className="text-right min-w-0 flex-1">
+            <p className="text-sm font-medium truncate">{product.name}</p>
             <p className="font-bold text-navy">₹{price}</p>
           </div>
         </div>

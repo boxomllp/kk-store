@@ -230,7 +230,9 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
     setOtpError("");
     setResendSeconds(30);
     setSendingOtp(true);
-    const { data, error } = await supabase.functions.invoke("send-otp", { body: { phone } });
+    const { data, error } = await supabase.functions.invoke("send-otp", {
+      body: { phone, order_id: orderId },
+    });
     if (error || !data?.success) {
       setApiError(data?.error || "Failed to resend OTP");
     }
@@ -242,10 +244,11 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
       setApiError("Enter a valid 10-digit phone number");
       return;
     }
-    if (orderId) {
-      await supabase.from("orders").update({ phone: newPhone }).eq("id", orderId);
-    }
     setValues((v) => ({ ...v, phone: newPhone }));
+    // resendOtp passes order_id, so the edge function (running with the
+    // service role key) updates the order's phone number server-side —
+    // a direct client-side update here would silently fail under RLS
+    // since customers aren't allowed to update orders directly.
     await resendOtp(newPhone);
     setChangingNumber(false);
   }
@@ -376,9 +379,14 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
                       type={f.field_type === "numeric" ? "tel" : "text"}
                       inputMode={f.field_type === "numeric" ? "numeric" : "text"}
                       placeholder={f.placeholder || ""}
+                      maxLength={f.field_name === "phone" ? 10 : f.field_name === "pincode" ? 6 : undefined}
                       className="w-full border rounded-lg px-3 py-2 mt-1"
                       value={(values as any)[f.field_name] ?? ""}
-                      onChange={(e) => handleFieldChange(f.field_name, e.target.value)}
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        const val = f.field_type === "numeric" ? raw.replace(/\D/g, "") : raw;
+                        handleFieldChange(f.field_name, val);
+                      }}
                     />
                     {errors[f.field_name] && (
                       <p className="text-red-500 text-xs mt-1">{errors[f.field_name]}</p>
@@ -486,9 +494,10 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
               <div className="mb-4 flex gap-2">
                 <input
                   value={newPhone}
-                  onChange={(e) => setNewPhone(e.target.value)}
+                  onChange={(e) => setNewPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
                   placeholder="New 10-digit number"
                   inputMode="numeric"
+                  maxLength={10}
                   className="flex-1 border rounded-lg px-3 py-2"
                 />
                 <button

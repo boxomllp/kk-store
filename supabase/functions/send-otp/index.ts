@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
     const apiHomeKey = Deno.env.get("APIHOME_API_KEY")!;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-    const { phone } = await req.json();
+    const { phone, order_id } = await req.json();
     if (!phone || !/^[6-9]\d{9}$/.test(phone)) {
       return new Response(JSON.stringify({ success: false, error: "Invalid phone number" }), {
         status: 400,
@@ -68,6 +68,20 @@ Deno.serve(async (req) => {
     const otpLength = parseInt(settings.otp_digit_length ?? "4", 10);
     const expiryMinutes = parseInt(settings.otp_expiry_minutes ?? "10", 10);
     const testMode = settings.otp_test_mode === "true";
+
+    // --- If this OTP is tied to an order (e.g. "Change Number" mid-checkout),
+    // keep the order's phone number in sync. This runs with the service role
+    // key so it works regardless of the public RLS policy (customers can't
+    // directly update orders, but this specific, validated action is safe).
+    if (order_id) {
+      const { error: phoneUpdateErr } = await supabase
+        .from("orders")
+        .update({ phone })
+        .eq("id", order_id);
+      if (phoneUpdateErr) {
+        console.error("Failed to sync order phone number:", phoneUpdateErr);
+      }
+    }
 
     // --- Invalidate old OTPs for this phone ---
     await supabase
