@@ -161,6 +161,18 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
     });
   }
 
+  // Show a field's error as soon as the customer moves to the next field,
+  // instead of waiting for the final "Buy Now" submit attempt.
+  function handleFieldBlur(fieldName: string, val: string) {
+    const message = validateField(fieldName, val);
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (message) next[fieldName] = message;
+      else delete next[fieldName];
+      return next;
+    });
+  }
+
   function validate(): boolean {
     const newErrors: Record<string, string> = {};
     fields.forEach((f) => {
@@ -358,6 +370,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
                         className="w-full border rounded-lg px-3 py-2 mt-1"
                         value={values.state}
                         onChange={(e) => handleFieldChange("state", e.target.value)}
+                        onBlur={(e) => handleFieldBlur("state", e.target.value)}
                       >
                         <option value="">Select State</option>
                         {INDIAN_STATES.map((s) => (
@@ -387,6 +400,7 @@ export default function BuyNowPopup({ productId, productName, price, variant, on
                         const val = f.field_type === "numeric" ? raw.replace(/\D/g, "") : raw;
                         handleFieldChange(f.field_name, val);
                       }}
+                      onBlur={(e) => handleFieldBlur(f.field_name, e.target.value)}
                     />
                     {errors[f.field_name] && (
                       <p className="text-red-500 text-xs mt-1">{errors[f.field_name]}</p>
